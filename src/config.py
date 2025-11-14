@@ -15,12 +15,21 @@ class Config:
         self.max_depth: int = None
         self.filter_substring: str = None
 
+        self.allowed_parameters = ("package_name", "uri",
+            "work_mode", "package_version", "output_file",
+            "ascii_tree", "max_depth", "filter_substring"
+        )
+
     def parse(self) -> 'Config':
         with open(self.config_path, 'r', encoding='utf-8') as f:
             config_data = {}
 
             for line in f:
                 key, value = self._parse_csv_line(line)
+
+                if key not in self.allowed_parameters:
+                    print("ERROR: Invalid key found.")
+                    return None
                 config_data[key] = value
 
             self._set_attributes(config_data)

@@ -1,7 +1,6 @@
 package_name,MyMavenProject
 uri,https://github.com/example/maven-project
 work_mode,REMOTE
-output_mode,FILE
 package_version,1.0.0
 ascii_tree,false
 output_file,./files/dependency_graph.png
