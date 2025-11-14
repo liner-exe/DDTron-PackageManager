@@ -32,7 +32,9 @@ class Config:
                     return None
                 config_data[key] = value
 
-            self._set_attributes(config_data)
+            if not self._set_attributes(config_data):
+                print("ERROR: Failed to set configuration attributes.")
+                return None
 
             return self
         
@@ -54,7 +56,7 @@ class Config:
             print(f"{key}: {value}")
 
         
-    def _set_attributes(self, config_data: dict):
+    def _set_attributes(self, config_data: dict) -> bool:
         self.package_name = config_data['package_name']
         self.uri = config_data['uri']
         
@@ -64,13 +66,23 @@ class Config:
         elif work_mode == 'remote':
             self.work_mode = WorkMode.REMOTE
         else:
-            print("Unknown work mode.")
+            print("ERROR: Unknown work mode.")
+            return False
 
         self.package_version = config_data['package_version']
         self.ascii_tree = config_data['ascii_tree']
         self.output_file = config_data['output_file']
-        self.max_depth = config_data['max_depth']
+        
+        max_depth = config_data['max_depth']
+        if max_depth.isdigit() and int(max_depth) > 0:
+            self.max_depth = int(max_depth)
+        else:
+            print("ERROR: max_depth should be a non-negative integer.")
+            return False
+
+        
         self.filter_substring = config_data['filter_substring']
+        return True
 
     def _parse_csv_line(self, line: str):
         line = line.strip()

@@ -5,6 +5,7 @@ def main():
     base_dir = Path(__file__).resolve().parent
     config = Config(base_dir / 'config.csv').parse()
     if config is None:
+        print("Program terminated due to configuration errors.")
         return
     config.print()
 
